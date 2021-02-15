@@ -15,28 +15,29 @@ SECRET_KEY = "<<ENTER SECRET KEY HERE>>"
 
 # the comment server will build an internal schedule object, including user comment settings,
 # based on an external source defining the schedule in the form of a 7-entry JSON array of the form
-# [{'hour' : "showname", ...}, ...] where each array entry is a dictionary representing a day of the week, 
+# [{'hour' : {'show': "showname", ...} ...}, ...] where each array entry is a dictionary representing a day of the week, 
 # starting on Sunday, and each dictionary entry includes, as key, the numerical hour of the day in 24-hour format,
-# and, as value, the name of the show at that hour.
+# and, as value, a *sub-dictionary* including the name of the show at that hour under the field 'show'
+# this subdictionary for each show can also include other data, if convenient for your station
 # for example, if my radio station has Show A from 5 AM to 7 AM on Sundays, Show B from 9 PM to 10 PM Sundays,
 # Show C from 2 PM to 4 PM on Mondays, Show D from 5 PM to 6 PM on Thursdays, and Show E from 11 PM Fridays to 1 AM Saturdays,
 # my input schedule JSON file would look like:
 # [
 #   {
-#       '5' : "Show A",
-#       '6' : "Show A",
-#       '21': "Show B"
+#       '5' : {'show': "Show A"},
+#       '6' : {'show': "Show A"},
+#       '21': {'show': "Show B"}
 #   }, {
-#       '14': "Show C",
-#       '15': "Show C"
+#       '14': {'show': "Show C"},
+#       '15': {'show': "Show C"}
 #   }, {
 #   }, {
 #   }, {
-#       '17': "Show D"
+#       '17': {'show': "Show D"}
 #   }, {
-#       '23': "Show E"
+#       '23': {'show': "Show E"}
 #   }, {
-#       '0' : "Show E"
+#       '0' : {'show': "Show E"}
 #   }
 # ]
 # Note that the comment server will periodically poll the source schedule and update its internal representation accordingly,
@@ -44,6 +45,7 @@ SECRET_KEY = "<<ENTER SECRET KEY HERE>>"
 # also, the comment server saves its internal schedule representation to <COMMENT SERVER BASE DIRECTORY>/json/schedule.json, so
 # DO NOT use that location for the source schedule
 # recommended location: <<COMMENT SERVER BASE DIRECTORY>>/json/source_schedule.json
+# you can also provide a web location: just provide a url starting with http:// or https://
 
 SOURCE_SCHEDULE_LOCATION = "<<PATH TO SOURCE_SCHEDULE_FILE_HERE>>"
 

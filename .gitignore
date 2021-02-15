@@ -1,0 +1,6 @@
+__pycache__
+venv
+error.log
+config.py.badradio
+json/**.json
+json/comments/**.json

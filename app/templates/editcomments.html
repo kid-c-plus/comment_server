@@ -1,0 +1,48 @@
+<!-- editing comments -->
+
+<html>
+<head>
+    <title>Edit Comments</title>
+</head>
+<body>
+    <p><a href="logout">Log out</a></p>
+    <p><a href="admin">Back to Admin</a></p>
+    <h3>Edit Comments</h3>
+    {% if enabled %}
+        {% if comments.keys() |length == 0 %}
+            <p>no comments</p>
+        {% else %}
+            <form action="" method="post" name="editcomments">
+                {{ form.hidden_tag() }}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>delete</th>
+                            <th>name</th>
+                            <th>comment</th>
+                        </tr> 
+                    </thead>
+                    <tbody>
+                        {% for commentid in comments.keys() %}
+                            <tr>
+                                <td> {{ form['comment_%s' % commentid] }} </td>
+                                <td> {{ comments[commentid]['name'] }} </td>
+                                <td> {{ comments[commentid]['comment'] }} </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            <p><input type="submit" value="delete selected comments"></p>
+        {% endif %}
+    {% else %}
+        <p>comments disabled for current show</p>
+    {% endif %}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <span style="color: blue;">{{ message }}</span><br>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+</body>
+</html>

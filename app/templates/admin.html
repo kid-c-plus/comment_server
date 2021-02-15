@@ -1,0 +1,28 @@
+<!-- admin console -->
+
+<html>
+<head>
+    <title>Admin Console</title>
+</head>
+<body>
+    <p><a href="logout">Log out</a></p>
+    <p><a href="editcomments">Edit comments</a></p>
+    <h3>Enable/Disable Comments</h3>
+    <form action="" method="post" name="admin">
+        {{ form.hidden_tag() }}
+        <p>
+            <label for="show">Select your show:</label>
+            {{ form.show }}
+        </p>
+        <p> Comments: {{ form.comments }} </p>
+        <p><input type="submit" value="submit"></p>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <span style="color: blue;">{{ message }}</span><br>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </form>
+<body>
+</html>

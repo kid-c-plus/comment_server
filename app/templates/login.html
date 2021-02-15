@@ -1,0 +1,27 @@
+<!-- login to admin console -->
+<html>
+<head>
+    <title>Sign In</title>
+</head>
+<body>
+    <h1>Sign In</h1>
+    <form action="" method="post" name="login">
+        {{ form.hidden_tag() }}
+        <p>
+            Username: {{ form.username(size=80) }}<br>
+        </p>
+        <p>
+            Password: {{ form.password(size=80) }}<br>
+        </p>
+        <p>{{ form.rememberme }} Remember Login</p>
+        <p><input type="submit" value="Sign In"></p>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <span style="color: red;">{{ message }}</span><br>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </form>
+</body>
+</html>

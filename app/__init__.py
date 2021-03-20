@@ -183,6 +183,10 @@ def get_current_showname():
 
     return streamstatus['show_name']
 
+# get current comment filename
+def get_comment_file():
+    return "%s/%s.json" % (COMMENTSDIR, pathvalidate.sanitize_filename(get_current_showname()))
+
 def update_stream_status():
     currentstatus = get_stream_status()
 

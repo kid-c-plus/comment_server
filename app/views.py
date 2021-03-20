@@ -16,6 +16,7 @@ import os
 import sys
 import datetime
 import re
+import pathvalidate
 
 # web endpoint handlers
 
@@ -23,12 +24,8 @@ import re
 @app.flaskapp.route("/comments")
 def get_comments():
     try:
-        # python treats monday as day 0, but we treat sunday as day 0...why can't we just get along
-        currentday = (datetime.datetime.now().weekday() + 1) % 7
-        currenthour = str(datetime.datetime.now().hour)
-
         if check_comments_enabled():
-            commentfile = get_comment_file(currentday, currenthour)
+            commentfile = app.get_comment_file()
             # return comment file
             if os.path.exists(commentfile):
                 with app.commentfilelock:
@@ -51,9 +48,6 @@ def get_comments():
 @app.flaskapp.route("/new", methods=["POST"])
 def add_comment():
     try:
-        currentday = (datetime.datetime.now().weekday() + 1) % 7
-        currenthour = str(datetime.datetime.now().hour)
-
         if check_comments_enabled():
 
             if 'name' in flask.request.form and 'comment' in flask.request.form:
@@ -70,7 +64,7 @@ def add_comment():
                 if app.flaskapp.config['PARSE_LINKS']:
                     safecomment = re.sub("(?:(?:http(?:s)?://)|^|\\s)([^\\s/$?.#:]*\\.[^\\s\.][^\\s]*)", app.flaskapp.config['PARSED_LINK_FORMAT'], safecomment)
 
-                commentfile = get_comment_file(currentday, currenthour)
+                commentfile = app.get_comment_file()
 
                 # add comment to file
                 with app.commentfilelock:
@@ -227,15 +221,9 @@ def check_login(username, password, rememberme=False):
         flask.flash("Login error.")
         return flask.redirect(flask.url_for("login"))
 
-# get current comment filename
-def get_comment_file(currentday, currenthour):
-    return "%s/%s.json" % (app.COMMENTSDIR, app.get_current_showname())
-
 # deletes comment with the given id
 def delete_comment(commentobj, commentid):
-    currentday = (datetime.datetime.now().weekday() + 1) % 7
-    currenthour = str(datetime.datetime.now().hour)
-    commentfile = get_comment_file(currentday, currenthour)
+    commentfile = app.get_comment_file()
     if commentid in commentobj:
         commentobj.pop(commentid)
     with app.commentfilelock:

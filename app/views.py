@@ -16,7 +16,6 @@ import os
 import sys
 import datetime
 import re
-import pathvalidate
 
 # web endpoint handlers
 

@@ -14,6 +14,7 @@ import sys
 import glob
 import re
 import time
+import pathvalidate
 from threading import Lock
 
 from flask import Flask
